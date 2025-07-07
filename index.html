@@ -1,215 +1,83 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Futuristic IP Lookup - Free API</title>
-<style>
-  @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap');
-
-  * {
-    margin: 0; padding: 0; box-sizing: border-box;
-  }
-
-  body {
-    background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
-    font-family: 'Orbitron', sans-serif;
-    color: #00ffd5;
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding: 2rem;
-  }
-
-  h1 {
-    font-weight: 700;
-    margin-bottom: 1rem;
-    font-size: 2.8rem;
-    letter-spacing: 0.2rem;
-    text-shadow: 0 0 8px #00ffd5aa;
-  }
-
-  .container {
-    max-width: 600px;
-    width: 100%;
-    background: rgba(0, 34, 43, 0.85);
-    border-radius: 1rem;
-    padding: 2rem;
-    box-shadow: 0 0 20px #00ffd5bb;
-    backdrop-filter: blur(12px);
-  }
-
-  .input-group {
-    display: flex;
-    margin-bottom: 1.5rem;
-  }
-
-  input[type="text"] {
-    flex: 1;
-    padding: 1rem;
-    font-size: 1.2rem;
-    border-radius: 0.8rem 0 0 0.8rem;
-    border: none;
-    outline: none;
-    background: #012e35;
-    color: #00ffd5;
-    letter-spacing: 0.1rem;
-    transition: box-shadow 0.3s ease;
-  }
-  input[type="text"]:focus {
-    box-shadow: 0 0 15px #00ffd5;
-  }
-
-  button {
-    padding: 1rem 1.5rem;
-    font-size: 1.2rem;
-    border: none;
-    background: #00ffd5;
-    color: #002e2f;
-    cursor: pointer;
-    font-weight: 700;
-    border-radius: 0 0.8rem 0.8rem 0;
-    transition: background 0.3s ease;
-  }
-  button:hover {
-    background: #00c7b1;
-  }
-
-  #result {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 1rem 2rem;
-    padding-top: 1rem;
-  }
-
-  .info-card {
-    background: #012e35cc;
-    padding: 1rem 1.5rem;
-    border-radius: 1rem;
-    box-shadow: 0 0 8px #00ffd5bb;
-    display: flex;
-    align-items: center;
-    gap: 1rem;
-    transition: transform 0.2s ease;
-  }
-  .info-card:hover {
-    transform: scale(1.05);
-    box-shadow: 0 0 20px #00ffd5ee;
-  }
-
-  .info-icon {
-    width: 48px;
-    height: 48px;
-    filter: invert(70%) sepia(100%) saturate(500%) hue-rotate(160deg);
-  }
-
-  .info-text {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-  }
-
-  .info-label {
-    font-weight: 700;
-    font-size: 0.9rem;
-    color: #00e1c1;
-  }
-
-  .info-value {
-    font-size: 1.1rem;
-    letter-spacing: 0.05rem;
-    color: #00ffd5;
-  }
-
-  @media (max-width: 480px) {
-    #result {
-      grid-template-columns: 1fr;
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Dracos Multi tools typ sh</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: #0f172a;
+      color: #e0e0e0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 2rem;
     }
-  }
-
-  body::before {
-    content: '';
-    position: fixed;
-    top: 0; left: 0;
-    width: 100vw; height: 100vh;
-    background:
-      linear-gradient(#00ffd5 1px, transparent 1px),
-      linear-gradient(90deg, #00ffd5 1px, transparent 1px);
-    background-size: 40px 40px;
-    opacity: 0.1;
-    pointer-events: none;
-    z-index: 0;
-    animation: moveGrid 30s linear infinite;
-  }
-
-  @keyframes moveGrid {
-    0% { background-position: 0 0, 0 0; }
-    100% { background-position: 40px 40px, 40px 40px; }
-  }
-</style>
+    .container {
+      background: #1e293b;
+      border-radius: 12px;
+      padding: 2rem;
+      max-width: 400px;
+      width: 100%;
+      box-shadow: 0 0 20px #3b82f6;
+      text-align: center;
+    }
+    button {
+      background: #3b82f6;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 8px;
+      color: white;
+      font-weight: bold;
+      cursor: pointer;
+      margin-top: 1rem;
+      transition: background 0.3s ease;
+    }
+    button:hover {
+      background: #60a5fa;
+    }
+    .result {
+      margin-top: 1.5rem;
+      font-size: 1.1rem;
+    }
+  </style>
 </head>
 <body>
-
-<h1>Futuristic IP Lookup</h1>
-<div class="container">
-  <div class="input-group">
-    <input id="ipInput" type="text" placeholder="Enter IP address (e.g. 8.8.8.8)" />
-    <button onclick="lookupIP()">Lookup</button>
+  <div class="container">
+    <h1>IP Lookup Tool</h1>
+    <button id="fetchBtn">Get My IP Info</button>
+    <div class="result" id="result"></div>
   </div>
-  <div id="result"></div>
-</div>
 
-<script>
-  async function lookupIP() {
-    const ip = document.getElementById('ipInput').value.trim();
+  <script>
+    const button = document.getElementById('fetchBtn');
     const resultDiv = document.getElementById('result');
-    if (!ip) {
-      alert('Please enter an IP address.');
-      return;
-    }
-    resultDiv.innerHTML = `<p style="grid-column: 1 / -1; text-align: center;">Loading...</p>`;
-    
-    try {
-      const response = await fetch(`http://ip-api.com/json/${ip}`);
-      const data = await response.json();
-      if(data.status !== 'success') {
-        resultDiv.innerHTML = `<p style="grid-column: 1 / -1; text-align: center; color:#ff4c4c;">Invalid IP or no data found.</p>`;
-        return;
-      }
-      
-      resultDiv.innerHTML = `
-        <div class="info-card">
-          <img class="info-icon" src="https://cdn-icons-png.flaticon.com/512/25/25231.png" alt="IP Icon" />
-          <div class="info-text"><span class="info-label">IP Address</span><span class="info-value">${data.query}</span></div>
-        </div>
-        <div class="info-card">
-          <img class="info-icon" src="https://flagcdn.com/w80/${data.countryCode.toLowerCase()}.png" alt="Country Flag" />
-          <div class="info-text"><span class="info-label">Country</span><span class="info-value">${data.country} (${data.countryCode})</span></div>
-        </div>
-        <div class="info-card">
-          <img class="info-icon" src="https://cdn-icons-png.flaticon.com/512/684/684908.png" alt="Region Icon" />
-          <div class="info-text"><span class="info-label">Region</span><span class="info-value">${data.regionName}</span></div>
-        </div>
-        <div class="info-card">
-          <img class="info-icon" src="https://cdn-icons-png.flaticon.com/512/616/616408.png" alt="City Icon" />
-          <div class="info-text"><span class="info-label">City</span><span class="info-value">${data.city}</span></div>
-        </div>
-        <div class="info-card">
-          <img class="info-icon" src="https://cdn-icons-png.flaticon.com/512/893/893257.png" alt="ISP Icon" />
-          <div class="info-text"><span class="info-label">ISP</span><span class="info-value">${data.isp}</span></div>
-        </div>
-        <div class="info-card">
-          <img class="info-icon" src="https://cdn-icons-png.flaticon.com/512/1828/1828884.png" alt="Timezone Icon" />
-          <div class="info-text"><span class="info-label">Timezone</span><span class="info-value">${data.timezone}</span></div>
-        </div>
-      `;
-    } catch (error) {
-      resultDiv.innerHTML = `<p style="grid-column: 1 / -1; text-align: center; color:#ff4c4c;">Error fetching data. Please check your internet connection.</p>`;
-      console.error(error);
-    }
-  }
-</script>
 
+    button.addEventListener('click', () => {
+      resultDiv.textContent = 'Fetching data...';
+
+      fetch('http://ip-api.com/json/')
+        .then(response => {
+          if (!response.ok) throw new Error('Network response was not ok');
+          return response.json();
+        })
+        .then(data => {
+          // Build a nice formatted output
+          resultDiv.innerHTML = `
+            <p><strong>IP:</strong> ${data.query}</p>
+            <p><strong>Country:</strong> ${data.country} (${data.countryCode})</p>
+            <p><strong>Region:</strong> ${data.regionName}</p>
+            <p><strong>City:</strong> ${data.city}</p>
+            <p><strong>ISP:</strong> ${data.isp}</p>
+            <p><strong>Timezone:</strong> ${data.timezone}</p>
+          `;
+        })
+        .catch(error => {
+          console.error('Fetch error:', error);
+          resultDiv.textContent = 'Error fetching data. Please check your internet connection or try again later.';
+        });
+    });
+  </script>
 </body>
 </html>
