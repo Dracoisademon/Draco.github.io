@@ -3,109 +3,87 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>ChatGPT Style UI</title>
+<title>Futuristic IP Lookup</title>
 <style>
   body {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background: #202123;
-    color: #e6e6e6;
-    margin: 0;
+    background: #0f111a;
+    color: #eee;
+    font-family: 'Orbitron', sans-serif;
     display: flex;
-    flex-direction: column;
+    justify-content: center;
+    align-items: center;
     height: 100vh;
+    margin: 0;
+    flex-direction: column;
   }
-  header {
-    background: #343541;
-    padding: 1rem;
-    text-align: center;
-    font-weight: bold;
-    font-size: 1.2rem;
-  }
-  #chat {
-    flex: 1;
-    padding: 1rem;
-    overflow-y: auto;
-  }
-  .message {
-    max-width: 80%;
-    margin-bottom: 1rem;
-    padding: 0.8rem 1rem;
-    border-radius: 10px;
-    line-height: 1.4;
-    white-space: pre-wrap;
-  }
-  .user {
-    background: #343541;
-    color: #fff;
-    align-self: flex-end;
-    border-bottom-right-radius: 0;
-  }
-  .bot {
-    background: #444654;
-    color: #ddd;
-    align-self: flex-start;
-    border-bottom-left-radius: 0;
-  }
-  form {
-    display: flex;
-    padding: 1rem;
-    background: #343541;
-  }
-  input[type="text"] {
-    flex: 1;
-    padding: 0.8rem;
-    border-radius: 5px;
+  input, button {
+    padding: 10px;
+    font-size: 1.2em;
+    border-radius: 6px;
     border: none;
-    font-size: 1rem;
+    margin: 5px;
+  }
+  input {
+    width: 300px;
+    background: #222833;
+    color: #eee;
   }
   button {
-    background: #10a37f;
-    border: none;
-    color: white;
-    padding: 0 1.5rem;
-    margin-left: 1rem;
-    border-radius: 5px;
+    background: #1de9b6;
+    color: #000;
     cursor: pointer;
-    font-weight: bold;
+    transition: background 0.3s;
   }
   button:hover {
-    background: #0e8c6a;
+    background: #13c9a8;
+  }
+  .result {
+    margin-top: 20px;
+    padding: 15px;
+    background: #121620;
+    border-radius: 8px;
+    width: 320px;
+    text-align: left;
   }
 </style>
 </head>
 <body>
-<header>ChatGPT Style Chat</header>
-<div id="chat" role="log" aria-live="polite" aria-relevant="additions"></div>
-<form id="chat-form">
-  <input type="text" id="input" autocomplete="off" placeholder="Type your message..." required />
-  <button type="submit">Send</button>
-</form>
+<h1>IP Lookup</h1>
+<input type="text" id="ipInput" placeholder="Enter IP address" />
+<button onclick="lookupIP()">Lookup</button>
+
+<div id="result" class="result"></div>
 
 <script>
-  const chat = document.getElementById('chat');
-  const form = document.getElementById('chat-form');
-  const input = document.getElementById('input');
+  async function lookupIP() {
+    const ip = document.getElementById('ipInput').value.trim();
+    if(!ip) {
+      alert('Please enter an IP address');
+      return;
+    }
+    const resultDiv = document.getElementById('result');
+    resultDiv.textContent = 'Loading...';
 
-  function appendMessage(text, sender) {
-    const msg = document.createElement('div');
-    msg.classList.add('message', sender);
-    msg.textContent = text;
-    chat.appendChild(msg);
-    chat.scrollTop = chat.scrollHeight;
+    try {
+      const response = await fetch(`http://ip-api.com/json/${ip}`);
+      const data = await response.json();
+      if(data.status === 'fail') {
+        resultDiv.textContent = 'Invalid IP or no data found.';
+        return;
+      }
+      resultDiv.innerHTML = `
+        <strong>IP:</strong> ${data.query} <br/>
+        <strong>Country:</strong> ${data.country} <br/>
+        <strong>Region:</strong> ${data.regionName} <br/>
+        <strong>City:</strong> ${data.city} <br/>
+        <strong>ISP:</strong> ${data.isp} <br/>
+        <strong>Org:</strong> ${data.org} <br/>
+        <strong>Timezone:</strong> ${data.timezone}
+      `;
+    } catch(e) {
+      resultDiv.textContent = 'Error fetching data.';
+    }
   }
-
-  form.addEventListener('submit', e => {
-    e.preventDefault();
-    const text = input.value.trim();
-    if (!text) return;
-    appendMessage(text, 'user');
-    input.value = '';
-    
-    // Fake bot response placeholder
-    setTimeout(() => {
-      appendMessage("This is a placeholder response from the bot.", 'bot');
-    }, 800);
-  });
 </script>
 </body>
 </html>
