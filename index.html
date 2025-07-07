@@ -5,77 +5,180 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Dracos Multi tools typ sh</title>
   <style>
+    /* Futuristic clean style */
     body {
+      margin: 0;
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      background: #0f172a;
-      color: #e0e0e0;
+      background: linear-gradient(135deg, #0d1117 0%, #161b22 100%);
+      color: #c9d1d9;
       display: flex;
       flex-direction: column;
-      align-items: center;
-      padding: 2rem;
+      min-height: 100vh;
     }
-    .container {
-      background: #1e293b;
-      border-radius: 12px;
-      padding: 2rem;
-      max-width: 400px;
-      width: 100%;
-      box-shadow: 0 0 20px #3b82f6;
+    header {
+      background: #161b22;
+      padding: 1rem 2rem;
       text-align: center;
+      box-shadow: 0 2px 10px #0f4c81;
+    }
+    header h1 {
+      margin: 0;
+      font-weight: 700;
+      font-size: 1.8rem;
+      color: #58a6ff;
+      user-select: none;
+    }
+    main {
+      flex: 1;
+      padding: 2rem;
+      max-width: 900px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 2rem;
+    }
+    section {
+      background: #21262d;
+      border-radius: 12px;
+      padding: 1.5rem;
+      box-shadow: 0 0 12px #2382d9;
+    }
+    section h2 {
+      color: #79c0ff;
+      margin-top: 0;
+      user-select: none;
+    }
+    input[type="text"] {
+      width: 100%;
+      padding: 0.5rem 0.75rem;
+      border-radius: 6px;
+      border: 1px solid #30363d;
+      background: #0d1117;
+      color: #c9d1d9;
+      font-size: 1rem;
+      outline: none;
+      margin-bottom: 1rem;
+    }
+    input[type="text"]:focus {
+      border-color: #58a6ff;
+      box-shadow: 0 0 5px #58a6ff;
     }
     button {
-      background: #3b82f6;
-      border: none;
-      padding: 10px 20px;
-      border-radius: 8px;
+      background: #2382d9;
       color: white;
-      font-weight: bold;
+      border: none;
+      padding: 0.6rem 1rem;
+      border-radius: 8px;
       cursor: pointer;
-      margin-top: 1rem;
+      font-weight: 600;
       transition: background 0.3s ease;
+      width: 100%;
     }
     button:hover {
-      background: #60a5fa;
+      background: #58a6ff;
     }
-    .result {
-      margin-top: 1.5rem;
-      font-size: 1.1rem;
+    .output {
+      margin-top: 1rem;
+      font-family: monospace;
+      white-space: pre-wrap;
+      max-height: 200px;
+      overflow-y: auto;
+      background: #0d1117;
+      padding: 0.75rem;
+      border-radius: 8px;
+      border: 1px solid #30363d;
+      color: #79c0ff;
+    }
+    footer {
+      text-align: center;
+      padding: 1rem;
+      background: #161b22;
+      color: #484f58;
+      font-size: 0.9rem;
+      user-select: none;
     }
   </style>
 </head>
 <body>
-  <div class="container">
-    <h1>IP Lookup Tool</h1>
-    <button id="fetchBtn">Get My IP Info</button>
-    <div class="result" id="result"></div>
-  </div>
+  <header>
+    <h1>Dracos Multi tools typ sh</h1>
+  </header>
+  <main>
+    <section>
+      <h2>IP Lookup</h2>
+      <input type="text" id="ipInput" placeholder="Enter IP or leave blank for your IP" />
+      <button id="ipLookupBtn">Lookup IP</button>
+      <pre class="output" id="ipOutput">Results will show here</pre>
+    </section>
+
+    <section>
+      <h2>Domain Whois</h2>
+      <input type="text" id="domainInput" placeholder="Enter domain (example.com)" />
+      <button id="whoisBtn">Get Whois</button>
+      <pre class="output" id="whoisOutput">Results will show here</pre>
+    </section>
+  </main>
+  <footer>
+    © 2025 Dracos Multi tools typ sh
+  </footer>
 
   <script>
-    const button = document.getElementById('fetchBtn');
-    const resultDiv = document.getElementById('result');
-
-    button.addEventListener('click', () => {
-      resultDiv.textContent = 'Fetching data...';
-
-      fetch('http://ip-api.com/json/')
-        .then(response => {
-          if (!response.ok) throw new Error('Network response was not ok');
-          return response.json();
+    // IP Lookup using ip-api.com (free, no key required)
+    document.getElementById('ipLookupBtn').addEventListener('click', () => {
+      const ip = document.getElementById('ipInput').value.trim() || '';
+      const output = document.getElementById('ipOutput');
+      output.textContent = 'Loading...';
+      fetch(`http://ip-api.com/json/${ip}`)
+        .then(res => {
+          if (!res.ok) throw new Error('Network response not ok');
+          return res.json();
         })
         .then(data => {
-          // Build a nice formatted output
-          resultDiv.innerHTML = `
-            <p><strong>IP:</strong> ${data.query}</p>
-            <p><strong>Country:</strong> ${data.country} (${data.countryCode})</p>
-            <p><strong>Region:</strong> ${data.regionName}</p>
-            <p><strong>City:</strong> ${data.city}</p>
-            <p><strong>ISP:</strong> ${data.isp}</p>
-            <p><strong>Timezone:</strong> ${data.timezone}</p>
-          `;
+          if (data.status === 'fail') {
+            output.textContent = `Error: ${data.message}`;
+            return;
+          }
+          output.textContent = 
+`IP: ${data.query}
+Country: ${data.country} (${data.countryCode})
+Region: ${data.regionName}
+City: ${data.city}
+ISP: ${data.isp}
+Timezone: ${data.timezone}`;
         })
-        .catch(error => {
-          console.error('Fetch error:', error);
-          resultDiv.textContent = 'Error fetching data. Please check your internet connection or try again later.';
+        .catch(e => {
+          output.textContent = 'Error fetching data. Please check your internet connection or try again later.';
+          console.error(e);
+        });
+    });
+
+    // Simple Domain Whois using public API (https://jsonwhoisapi.com requires key)
+    // Using https://api.whois.vu?domain=example.com (free no key)
+    document.getElementById('whoisBtn').addEventListener('click', () => {
+      const domain = document.getElementById('domainInput').value.trim();
+      const output = document.getElementById('whoisOutput');
+      if (!domain) {
+        output.textContent = 'Please enter a domain.';
+        return;
+      }
+      output.textContent = 'Loading...';
+
+      fetch(`https://api.whois.vu/?domain=${domain}`)
+        .then(res => {
+          if (!res.ok) throw new Error('Network response not ok');
+          return res.json();
+        })
+        .then(data => {
+          if(data.error){
+            output.textContent = 'Error: ' + data.error;
+            return;
+          }
+          // Show a pretty json output
+          output.textContent = JSON.stringify(data, null, 2);
+        })
+        .catch(e => {
+          output.textContent = 'Error fetching data. Please check your internet connection or try again later.';
+          console.error(e);
         });
     });
   </script>
