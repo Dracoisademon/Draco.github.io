@@ -1,186 +1,65 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Dracos Multi tools typ sh</title>
-  <style>
-    /* Futuristic clean style */
-    body {
-      margin: 0;
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      background: linear-gradient(135deg, #0d1117 0%, #161b22 100%);
-      color: #c9d1d9;
-      display: flex;
-      flex-direction: column;
-      min-height: 100vh;
-    }
-    header {
-      background: #161b22;
-      padding: 1rem 2rem;
-      text-align: center;
-      box-shadow: 0 2px 10px #0f4c81;
-    }
-    header h1 {
-      margin: 0;
-      font-weight: 700;
-      font-size: 1.8rem;
-      color: #58a6ff;
-      user-select: none;
-    }
-    main {
-      flex: 1;
-      padding: 2rem;
-      max-width: 900px;
-      margin: 0 auto;
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-      gap: 2rem;
-    }
-    section {
-      background: #21262d;
-      border-radius: 12px;
-      padding: 1.5rem;
-      box-shadow: 0 0 12px #2382d9;
-    }
-    section h2 {
-      color: #79c0ff;
-      margin-top: 0;
-      user-select: none;
-    }
-    input[type="text"] {
-      width: 100%;
-      padding: 0.5rem 0.75rem;
-      border-radius: 6px;
-      border: 1px solid #30363d;
-      background: #0d1117;
-      color: #c9d1d9;
-      font-size: 1rem;
-      outline: none;
-      margin-bottom: 1rem;
-    }
-    input[type="text"]:focus {
-      border-color: #58a6ff;
-      box-shadow: 0 0 5px #58a6ff;
-    }
-    button {
-      background: #2382d9;
-      color: white;
-      border: none;
-      padding: 0.6rem 1rem;
-      border-radius: 8px;
-      cursor: pointer;
-      font-weight: 600;
-      transition: background 0.3s ease;
-      width: 100%;
-    }
-    button:hover {
-      background: #58a6ff;
-    }
-    .output {
-      margin-top: 1rem;
-      font-family: monospace;
-      white-space: pre-wrap;
-      max-height: 200px;
-      overflow-y: auto;
-      background: #0d1117;
-      padding: 0.75rem;
-      border-radius: 8px;
-      border: 1px solid #30363d;
-      color: #79c0ff;
-    }
-    footer {
-      text-align: center;
-      padding: 1rem;
-      background: #161b22;
-      color: #484f58;
-      font-size: 0.9rem;
-      user-select: none;
-    }
-  </style>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Dracos Multi tools typ sh</title>
+<style>
+  body { background:#121212; color:#eee; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; margin:0; padding:20px; }
+  h1, h2 { color: #00ffff; }
+  input, button { padding:10px; margin:5px 0; width: 100%; max-width: 400px; border-radius: 5px; border:none; }
+  button { background:#00ffff; color:#000; cursor:pointer; font-weight:bold; }
+  button:hover { background:#00cccc; }
+  section { margin-bottom: 40px; }
+</style>
 </head>
 <body>
-  <header>
-    <h1>Dracos Multi tools typ sh</h1>
-  </header>
-  <main>
-    <section>
-      <h2>IP Lookup</h2>
-      <input type="text" id="ipInput" placeholder="Enter IP or leave blank for your IP" />
-      <button id="ipLookupBtn">Lookup IP</button>
-      <pre class="output" id="ipOutput">Results will show here</pre>
-    </section>
 
-    <section>
-      <h2>Domain Whois</h2>
-      <input type="text" id="domainInput" placeholder="Enter domain (example.com)" />
-      <button id="whoisBtn">Get Whois</button>
-      <pre class="output" id="whoisOutput">Results will show here</pre>
-    </section>
-  </main>
-  <footer>
-    © 2025 Dracos Multi tools typ sh
-  </footer>
+<h1>Dracos Multi tools typ sh</h1>
 
-  <script>
-    // IP Lookup using ip-api.com (free, no key required)
-    document.getElementById('ipLookupBtn').addEventListener('click', () => {
-      const ip = document.getElementById('ipInput').value.trim() || '';
-      const output = document.getElementById('ipOutput');
-      output.textContent = 'Loading...';
-      fetch(`http://ip-api.com/json/${ip}`)
-        .then(res => {
-          if (!res.ok) throw new Error('Network response not ok');
-          return res.json();
-        })
-        .then(data => {
-          if (data.status === 'fail') {
-            output.textContent = `Error: ${data.message}`;
-            return;
-          }
-          output.textContent = 
-`IP: ${data.query}
-Country: ${data.country} (${data.countryCode})
-Region: ${data.regionName}
-City: ${data.city}
-ISP: ${data.isp}
-Timezone: ${data.timezone}`;
-        })
-        .catch(e => {
-          output.textContent = 'Error fetching data. Please check your internet connection or try again later.';
-          console.error(e);
-        });
-    });
+<section>
+  <h2>IP Lookup (Free, No Key)</h2>
+  <input type="text" id="ipInput" placeholder="Enter IP address (e.g. 8.8.8.8)" />
+  <button onclick="lookupIP()">Lookup IP</button>
+  <pre id="ipResult"></pre>
+</section>
 
-    // Simple Domain Whois using public API (https://jsonwhoisapi.com requires key)
-    // Using https://api.whois.vu?domain=example.com (free no key)
-    document.getElementById('whoisBtn').addEventListener('click', () => {
-      const domain = document.getElementById('domainInput').value.trim();
-      const output = document.getElementById('whoisOutput');
-      if (!domain) {
-        output.textContent = 'Please enter a domain.';
+<section>
+  <h2>Domain Whois (Opens External Site)</h2>
+  <input type="text" id="domainInput" placeholder="Enter domain (example.com)" />
+  <button onclick="whoisLookup()">Lookup Whois</button>
+</section>
+
+<script>
+  async function lookupIP() {
+    const ip = document.getElementById('ipInput').value.trim();
+    if (!ip) {
+      alert('Enter an IP address!');
+      return;
+    }
+    document.getElementById('ipResult').textContent = 'Loading...';
+    try {
+      const res = await fetch(`http://ip-api.com/json/${ip}`);
+      const data = await res.json();
+      if(data.status === 'fail') {
+        document.getElementById('ipResult').textContent = 'Invalid IP or no data found.';
         return;
       }
-      output.textContent = 'Loading...';
+      document.getElementById('ipResult').textContent = JSON.stringify(data, null, 2);
+    } catch (e) {
+      document.getElementById('ipResult').textContent = 'Error fetching data.';
+    }
+  }
 
-      fetch(`https://api.whois.vu/?domain=${domain}`)
-        .then(res => {
-          if (!res.ok) throw new Error('Network response not ok');
-          return res.json();
-        })
-        .then(data => {
-          if(data.error){
-            output.textContent = 'Error: ' + data.error;
-            return;
-          }
-          // Show a pretty json output
-          output.textContent = JSON.stringify(data, null, 2);
-        })
-        .catch(e => {
-          output.textContent = 'Error fetching data. Please check your internet connection or try again later.';
-          console.error(e);
-        });
-    });
-  </script>
+  function whoisLookup() {
+    const domain = document.getElementById('domainInput').value.trim();
+    if (!domain) {
+      alert('Enter a domain!');
+      return;
+    }
+    window.open(`https://who.is/whois/${domain}`, '_blank');
+  }
+</script>
+
 </body>
 </html>
