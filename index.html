@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>ChatGPT Style UI</title>
+<style>
+  body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: #202123;
+    color: #e6e6e6;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+  }
+  header {
+    background: #343541;
+    padding: 1rem;
+    text-align: center;
+    font-weight: bold;
+    font-size: 1.2rem;
+  }
+  #chat {
+    flex: 1;
+    padding: 1rem;
+    overflow-y: auto;
+  }
+  .message {
+    max-width: 80%;
+    margin-bottom: 1rem;
+    padding: 0.8rem 1rem;
+    border-radius: 10px;
+    line-height: 1.4;
+    white-space: pre-wrap;
+  }
+  .user {
+    background: #343541;
+    color: #fff;
+    align-self: flex-end;
+    border-bottom-right-radius: 0;
+  }
+  .bot {
+    background: #444654;
+    color: #ddd;
+    align-self: flex-start;
+    border-bottom-left-radius: 0;
+  }
+  form {
+    display: flex;
+    padding: 1rem;
+    background: #343541;
+  }
+  input[type="text"] {
+    flex: 1;
+    padding: 0.8rem;
+    border-radius: 5px;
+    border: none;
+    font-size: 1rem;
+  }
+  button {
+    background: #10a37f;
+    border: none;
+    color: white;
+    padding: 0 1.5rem;
+    margin-left: 1rem;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: bold;
+  }
+  button:hover {
+    background: #0e8c6a;
+  }
+</style>
+</head>
+<body>
+<header>ChatGPT Style Chat</header>
+<div id="chat" role="log" aria-live="polite" aria-relevant="additions"></div>
+<form id="chat-form">
+  <input type="text" id="input" autocomplete="off" placeholder="Type your message..." required />
+  <button type="submit">Send</button>
+</form>
+
+<script>
+  const chat = document.getElementById('chat');
+  const form = document.getElementById('chat-form');
+  const input = document.getElementById('input');
+
+  function appendMessage(text, sender) {
+    const msg = document.createElement('div');
+    msg.classList.add('message', sender);
+    msg.textContent = text;
+    chat.appendChild(msg);
+    chat.scrollTop = chat.scrollHeight;
+  }
+
+  form.addEventListener('submit', e => {
+    e.preventDefault();
+    const text = input.value.trim();
+    if (!text) return;
+    appendMessage(text, 'user');
+    input.value = '';
+    
+    // Fake bot response placeholder
+    setTimeout(() => {
+      appendMessage("This is a placeholder response from the bot.", 'bot');
+    }, 800);
+  });
+</script>
+</body>
+</html>
